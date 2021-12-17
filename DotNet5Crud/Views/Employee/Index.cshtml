@@ -1,0 +1,95 @@
+﻿@model IEnumerable<DotNet5Crud.Models.Employee>
+
+@{
+    ViewData["Title"] = "EmployeeList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/site.css" rel="stylesheet" />
+
+<script src="~/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript">
+    function ShowMyPopup() {
+        window.open("/Employee/Create", "WindowPopup", 'width=300px,height=650px');
+    }
+</script>
+<div class=" Index">
+
+    <h1>Employee List</h1>
+
+    <p style="text-align:right;margin-right:20px;">
+        <div class="btn btn-outline-primary" onclick="ShowMyPopup()">Create</div>
+    </p>
+    <div >
+        <form asp-controller="Employee" asp-action="Index" method="get" >
+            <span class="btn-group">
+                <input class="form-control" type="text" name="SearchText" placeholder="SearchByEmployeeName" />
+                <input class="p-1 ml-2 btn btn-sm btn-info" type="submit" value="Search" />
+            </span>
+        </form>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeSalary)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EmployeeCity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Image)
+                    </th>
+
+
+                    <th></th>
+                    <th>Edit Action</th>
+                    <th>Details Action</th>
+                    <th>Delete Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeSalary)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EmployeeCity)
+                    </td>
+                    <td>
+                       
+                         
+                            @{
+                                var base64 = Convert.ToBase64String(item.Image); // 
+                                var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+
+                            }
+                                    <img src='@imgsrc'style="max-width:100px; max-height:100px"/>
+                         
+
+                    </td>
+
+                    <td>
+                    <td class="text-center">
+                        <a asp-action="Edit" class="btn btn-outline-primary" asp-route-employeeId="@item.EmployeeId">Edit</a>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Details" class="btn btn-outline-info" asp-route-employeeId="@item.EmployeeId">Details</a>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Delete" class="btn btn-outline-danger" asp-route-employeeId="@item.EmployeeId">Delete</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
